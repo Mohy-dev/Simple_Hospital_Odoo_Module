@@ -1,0 +1,64 @@
+<odoo>
+    <data>
+        <record id="hms_patient_tree_view" model="ir.ui.view">
+            <field name="name">Patients Tree View</field>
+            <field name="model">hms.patient</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="first_name"/>
+                    <field name="last_name"/>
+                    <field name="blood_type"/>
+                    <field name="pcr"/>
+                    <field name="cr_ratio"/>
+                    <field name="department_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="hms_patient_form" model="ir.ui.view">
+            <field name="name">Patients Form View</field>
+            <field name="model">hms.patient</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group string="Patient Inforamation">
+                                <field name="first_name" required = "True"/>
+                                <field name="last_name" required = "True"/>
+                                <field name="image" widget="image"/>
+                                <field name="age"/>
+                                <field name="birth_date"/>
+                                <field name="department_id" />
+                                <field name="capacity" />
+                            </group>
+                            <group string="Medical Inforamation">
+                                <field name="history" attrs="{'invisible':[('age','&lt;',50)]}"/>
+                                <field name="blood_type"/>
+                                <field name="pcr"/>
+                                <field name="cr_ratio" attrs="{'required':[('pcr','=',True)]}"/>
+                                <field name="doctors" widget="many2many_tags"/>
+                            </group>
+                            <field name="logs" readonly="1">
+                                <tree>
+                                    <field name="user"/>
+                                    <field name="date"/>
+                                    <field name="details"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <record id="hospital_patients_action" model="ir.actions.act_window">
+            <field name="name">Patients</field>
+            <field name="res_model">hms.patient</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="hms_root_menu" name="Hospital"/>
+        <menuitem id="hms_data_menu" parent="hms_root_menu" name="Hospital"/>
+        <menuitem id="hms_data_view" parent="hms_data_menu" name="Patients" action="hospital_patients_action"/>
+    </data>
+</odoo>
